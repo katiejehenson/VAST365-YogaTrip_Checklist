@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Group Travel Checklist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;900&family=Raleway:ital@1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:     #2B4A6F;
+      --primary:  #3EE7C6;
+      --secondary:#7CE9E5;
+      --light:    #B1E9F3;
+      --bg:       #F0FCFB;
+      --bg2:      #E4F8F6;
+      --white:    #ffffff;
+      --text:     #1A2F47;
+      --slate:    #4A6A8A;
+      --border:   #C8F0EC;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy);
+      padding: 60px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 50%, rgba(62,231,198,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 80% 30%, rgba(124,233,229,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(62,231,198,0.15);
+      border: 1px solid rgba(62,231,198,0.4);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 5px 18px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      animation: fadeDown 0.6s ease both;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 7vw, 68px);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      animation: fadeDown 0.7s ease 0.1s both;
+    }
+    .hero h1 span { color: var(--primary); }
+    .hero p {
+      color: var(--secondary);
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      animation: fadeDown 0.7s ease 0.2s both;
+    }
+    .accent-bar {
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--light));
+    }
+
+    /* ── PROGRESS ── */
+    .progress-wrap {
+      max-width: 760px;
+      margin: 28px auto 0;
+      padding: 0 20px;
+      animation: fadeUp 0.7s ease 0.3s both;
+    }
+    .progress-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 4px 24px rgba(43,74,111,0.10);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .progress-info { flex: 1; }
+    .progress-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 8px;
+    }
+    .progress-bar-track {
+      height: 8px;
+      background: var(--bg2);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 100px;
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+      width: 0%;
+    }
+    .progress-pct {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--primary);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 24px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(43,74,111,0.07);
+      border: 1px solid var(--border);
+      animation: fadeUp 0.5s ease both;
+    }
+    .section-header {
+      background: var(--navy);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .section-header:hover { background: #1e3652; }
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+    .section-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-pct {
+      background: rgba(62,231,198,0.2);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 100px;
+    }
+    .section-pct.done { background: var(--primary); color: var(--navy); }
+    .chevron {
+      color: var(--secondary);
+      font-size: 12px;
+      transition: transform 0.25s;
+    }
+    .section.collapsed .chevron { transform: rotate(-90deg); }
+    .section-body { display: block; }
+    .section.collapsed .section-body { display: none; }
+
+    /* ── ITEMS ── */
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 11px 18px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .item:last-child { border-bottom: none; }
+    .item:nth-child(even) { background: var(--bg); }
+    .item:hover { background: #e8f9f7; }
+    .item.checked { background: #f5fffe; }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .item.checked .checkbox {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .checkmark {
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 900;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.2s;
+    }
+    .item.checked .checkmark { opacity: 1; transform: scale(1); }
+
+    .item-content { flex: 1; }
+    .item-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+      transition: all 0.2s;
+    }
+    .item.checked .item-text {
+      color: #9ab5cc;
+      text-decoration: line-through;
+    }
+    .item-note {
+      font-size: 12px;
+      font-style: italic;
+      color: var(--slate);
+      margin-top: 2px;
+      font-weight: 400;
+    }
+    .item-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 2px 10px;
+      border-radius: 100px;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: all 0.2s;
+    }
+    .item-link:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--navy);
+      transform: translateY(-1px);
+    }
+
+    /* ── TIPS ── */
+    .tips-section {
+      background: var(--white);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(43,74,111,0.07);
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .tips-header {
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      padding: 14px 20px;
+    }
+    .tips-header h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: 0.02em;
+    }
+    .tip {
+      padding: 11px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+    }
+    .tip:last-child { border-bottom: none; }
+    .tip:nth-child(even) { background: var(--bg); }
+    .tip-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+      min-width: 100px;
+    }
+    .tip-text {
+      font-size: 12px;
+      font-style: italic;
+      color: var(--slate);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    /* ── LINKS TABLE ── */
+    .links-section {
+      background: var(--white);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(43,74,111,0.07);
+      border: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .links-header {
+      background: var(--navy);
+      padding: 14px 20px;
+    }
+    .links-header h2 { font-size: 14px; font-weight: 700; color: var(--white); letter-spacing: 0.02em; }
+    .link-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      gap: 16px;
+    }
+    .link-row:last-child { border-bottom: none; }
+    .link-row:nth-child(even) { background: var(--bg); }
+    .link-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .link-btn {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy);
+      background: var(--primary);
+      padding: 4px 14px;
+      border-radius: 100px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
+    }
+    .link-btn:hover { background: var(--secondary); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 0 20px 40px;
+      color: var(--slate);
+      font-size: 13px;
+      font-weight: 400;
+    }
+    footer span { color: var(--primary); font-weight: 700; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .section:nth-child(1) { animation-delay: 0.1s; }
+    .section:nth-child(2) { animation-delay: 0.15s; }
+    .section:nth-child(3) { animation-delay: 0.2s; }
+    .section:nth-child(4) { animation-delay: 0.25s; }
+
+    @media (max-width: 600px) {
+      .progress-card { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .progress-pct { align-self: flex-end; }
+      .tip { flex-direction: column; gap: 2px; }
+      .tip-label { min-width: unset; }
+      .link-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Group Travel</div>
+  <h1>✈ Travel <span>Checklist</span></h1>
+  <p>Pack smart. Travel light. Arrive ready.</p>
+</div>
+<div class="accent-bar"></div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-card">
+    <div class="progress-info">
+      <div class="progress-label" id="progress-label">0 of 32 items packed</div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-bar"></div>
+      </div>
+    </div>
+    <div class="progress-pct" id="progress-pct">0%</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- DOCUMENTS -->
+  <div class="section" id="s0">
+    <div class="section-header" onclick="toggleSection('s0')">
+      <span class="section-title">📋 Documents & Bookings</span>
+      <div class="section-meta">
+        <span class="section-pct" id="pct-s0">0%</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="item" onclick="toggle(this)">
+        <div class="checkbox"><span class="checkmark">✓</span></div>
+        <div class="item-content">
+          <div class="item-text">Passport — valid 6+ months beyond travel dates</div>
+          <div class="item-note">Check expiration date NOW</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="checkbox"><span class="checkmark">✓</span></div>
+        <div class="item-content">
+          <div class="item-text">Visa requirements for your destination</div>
+          <div class="item-note">US Citizens: Check State Dept for entry requirements</div>
+          <a class="item-link" href="https://travel.state.gov/content/travel/en/us-visas.html" target="_blank" onclick="event.stopPropagation()">🔗 State Dept Visa Info</a>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="checkbox"><span class="checkmark">✓</span></div>
+        <div class="item-content">
+          <div class="item-text">Air tickets — printed or downloaded offline</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="checkbox"><span class="checkmark">✓</span></div>
+        <div class="item-content">
+          <div class="item-text">Train / ferry tickets (if applicable)</div>
+          <div class="item-note">Screenshot confirmations in case of no wifi</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="checkbox"><span class="checkmark">✓</span></div>
+        <div class="item-content">
+          <div class="item-text">Travel insurance purchased & docs saved</div>
+          <div class="item-note">Covers medical, cancellation & lost luggage</div>
+          <a class="item-link" href="https://travel.state.gov/content/travel/en/international-travel/before-you-go/your-health-abroad/Insurance_Coverage_Overseas.html" target="_blank" onclick="event.stopPropagation()">🔗 State Dept Insurance Guide</a>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="checkbox"><span class="checkmark">✓</span></div>
+        <div class="item-content">
+          <div class="item-text">Photocopies of passport & key docs</div>
+          <div class="item-note">Store separately from originals + email to yourself</div>
+        </div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="checkbox"><span class="checkmark">✓</span></div>
+        <div class="item-content">
+          <div class="item-text">Emergency contacts list written down</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOTHING -->
+  <div class="section" id="s1">
+    <div class="section-header" onclick="toggleSection('s1')">
+      <span class="section-title">👗 Clothing & Accessories</span>
+      <div class="section-meta">
+        <span class="section-pct" id="pct-s1">0%</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Yoga clothes & swimsuit</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Laundry detergent for hand washing</div><div class="item-note">Lighten your luggage — rewear & rewash!</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Comfy clothes for lounging or exploring</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Long sleeved lightweight shirt & sarong</div><div class="item-note">Great for temples, sun protection & cool evenings</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Good walking shoes</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Flip flops and/or sandals</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Socks & underwear</div><div class="item-note">Don't forget these!</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Sunglasses & hat(s)</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Extra duffle bag for shopping goodies</div></div></div>
+    </div>
+  </div>
+
+  <!-- HEALTH -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggleSection('s2')">
+      <span class="section-title">💊 Health & Toiletries</span>
+      <div class="section-meta">
+        <span class="section-pct" id="pct-s2">0%</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Toiletries & feminine products</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Medications packed in carry-on</div><div class="item-note">⚠️ Always keep prescriptions with you — never in checked bags</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">EpiPen & Benadryl (if you have life-threatening allergies)</div><div class="item-note">Never check these — keep them accessible at all times</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Probiotics for digestive health</div><div class="item-note">Start taking a week before you leave!</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Activated charcoal for unexpected tummy troubles</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Sunscreen (reef-safe preferred)</div></div></div>
+    </div>
+  </div>
+
+  <!-- GEAR -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggleSection('s3')">
+      <span class="section-title">🎒 Gear & Essentials</span>
+      <div class="section-meta">
+        <span class="section-pct" id="pct-s3">0%</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Reusable water bottle</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Plug adapter — Greece uses Type C & F</div><div class="item-note">Two round parallel pins — pick up before you go</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">All charging cables</div><div class="item-note">Phone, laptop, headphones, camera...</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Ear plugs (for light sleepers)</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Journal & pen</div></div></div>
+      <div class="item" onclick="toggle(this)"><div class="checkbox"><span class="checkmark">✓</span></div><div class="item-content"><div class="item-text">Good book to read</div></div></div>
+    </div>
+  </div>
+
+  <!-- PRO TIPS -->
+  <div class="tips-section">
+    <div class="tips-header"><h2>💡 Pro Tips</h2></div>
+    <div class="tip"><span class="tip-label">Medications</span><span class="tip-text">Always pack prescriptions in your carry-on bag — never in checked luggage.</span></div>
+    <div class="tip"><span class="tip-label">Allergies</span><span class="tip-text">Life-threatening allergy? Keep your EpiPen and Benadryl accessible at all times.</span></div>
+    <div class="tip"><span class="tip-label">Gut health</span><span class="tip-text">Start probiotics a week before departure. Add activated charcoal as backup.</span></div>
+    <div class="tip"><span class="tip-label">Greece plugs</span><span class="tip-text">Type C & F (two round parallel pins). Pick up a universal adapter before you go.</span></div>
+    <div class="tip"><span class="tip-label">Light packing</span><span class="tip-text">Bring laundry detergent sheets — hand wash and rewear to keep your bag light.</span></div>
+  </div>
+
+  <!-- USEFUL LINKS -->
+  <div class="links-section">
+    <div class="links-header"><h2>🔗 Useful Links</h2></div>
+    <div class="link-row"><span class="link-name">🇺🇸 US Visa & Entry Requirements</span><a class="link-btn" href="https://travel.state.gov/content/travel/en/us-visas.html" target="_blank">Visit →</a></div>
+    <div class="link-row"><span class="link-name">🛡️ Travel Insurance Info</span><a class="link-btn" href="https://travel.state.gov/content/travel/en/international-travel/before-you-go/your-health-abroad/Insurance_Coverage_Overseas.html" target="_blank">Visit →</a></div>
+    <div class="link-row"><span class="link-name">⚠️ Travel Advisories by Country</span><a class="link-btn" href="https://travel.state.gov/content/travel/en/traveladvisories/traveladvisories.html/" target="_blank">Visit →</a></div>
+    <div class="link-row"><span class="link-name">📋 STEP Smart Traveler Enrollment</span><a class="link-btn" href="https://step.state.gov/" target="_blank">Visit →</a></div>
+  </div>
+
+</main>
+
+<footer>
+  <span>✈</span> Safe travels · Check off as you pack · Bon voyage! <span>✈</span>
+</footer>
+
+<script>
+  const SECTIONS = ['s0','s1','s2','s3'];
+
+  function toggle(item) {
+    item.classList.toggle('checked');
+    updateProgress();
+  }
+
+  function toggleSection(id) {
+    document.getElementById(id).classList.toggle('collapsed');
+  }
+
+  function updateProgress() {
+    const allItems = document.querySelectorAll('.item');
+    const total = allItems.length;
+    let done = 0;
+
+    SECTIONS.forEach(sid => {
+      const sec = document.getElementById(sid);
+      const items = sec.querySelectorAll('.item');
+      const secDone = sec.querySelectorAll('.item.checked').length;
+      done += secDone;
+      const pct = Math.round((secDone / items.length) * 100);
+      const pctEl = document.getElementById('pct-' + sid);
+      pctEl.textContent = pct + '%';
+      pctEl.classList.toggle('done', pct === 100);
+    });
+
+    const pct = Math.round((done / total) * 100);
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+
+    const emoji = pct === 100 ? '🎉' : pct >= 75 ? '✈️' : pct >= 50 ? '🧳' : pct >= 25 ? '📝' : '🌍';
+    document.getElementById('progress-label').textContent =
+      `${emoji}  ${done} of ${total} items packed`;
+
+    if (pct === 100) {
+      document.getElementById('progress-pct').style.color = '#3EE7C6';
+    }
+  }
+
+  updateProgress();
+</script>
+</body>
+</html>
