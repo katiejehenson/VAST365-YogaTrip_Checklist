@@ -75,10 +75,70 @@
       font-weight: 300;
       letter-spacing: 0.04em;
       animation: fadeDown 0.7s ease 0.2s both;
+      margin-bottom: 28px;
+    }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: var(--navy);
+      font-family: 'Raleway', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.25s;
+      animation: fadeDown 0.7s ease 0.3s both;
+      box-shadow: 0 4px 20px rgba(62,231,198,0.3);
+    }
+    .download-btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(62,231,198,0.4);
+    }
+    .download-btn svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
     }
     .accent-bar {
       height: 4px;
       background: linear-gradient(90deg, var(--primary), var(--secondary), var(--light));
+    }
+    .hero-actions {
+      margin-top: 24px;
+      animation: fadeDown 0.7s ease 0.3s both;
+    }
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: var(--navy);
+      font-family: 'Raleway', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 20px rgba(62,231,198,0.35);
+    }
+    .btn-download:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(62,231,198,0.45);
+    }
+    .btn-download svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
     }
 
     /* ── PROGRESS ── */
@@ -387,6 +447,14 @@
   <div class="hero-badge">Group Travel</div>
   <h1>✈ Travel <span>Checklist</span></h1>
   <p>Pack smart. Travel light. Arrive ready.</p>
+  <a class="download-btn" href="travel-checklist-branded (1).pdf" download>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Download PDF Checklist
+  </a>
 </div>
 <div class="accent-bar"></div>
 
